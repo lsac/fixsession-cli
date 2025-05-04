@@ -90,7 +90,7 @@ session testrequest
 ##### Sequence number reset
 Resets IN and OUT sequence to 1
 
-```
+```aidl
 session current
 -> FIX.4.2:BANZAI->EXEC[in:11231,out:2381]
 session reset
@@ -230,7 +230,7 @@ header tag operations.
 
 Mutator is used to test FIX engine's obedience to the ROE.
 
-```
+```aidl
 mutate
 -> not processed
 mutate show
