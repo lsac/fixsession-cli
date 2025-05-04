@@ -17,7 +17,7 @@ The Banzai ui has received a few updates.
 * Order pauser - repeated orders are gaped on the interval that uses busy spin
 * Blotter clean up - clear out entries in order blotter or execution blotter
 
-![](.\image\banzai.png)
+![](./image/banzai.png)
 
 ### Basic Operation
 
