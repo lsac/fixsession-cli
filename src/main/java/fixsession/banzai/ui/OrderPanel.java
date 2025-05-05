@@ -45,7 +45,7 @@ public class OrderPanel extends JPanel {
         add(new JScrollPane(orderTable), constraints);
     }
 
-    public JTable orderTable() {
+    public JTable getOrderTable() {
         return orderTable;
     }
 }

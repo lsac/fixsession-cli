@@ -87,7 +87,7 @@ public class BanzaiPanel extends JPanel
         cancelReplacePanel.setEnabled(false);
 
         orderEntryPanel.addActionListener(this);
-        orderPanel.orderTable().getSelectionModel()
+        orderPanel.getOrderTable().getSelectionModel()
                 .addListSelectionListener(new OrderSelection());
         cancelReplacePanel.addActionListener(this);
         application.addOrderObserver(this);
@@ -103,14 +103,14 @@ public class BanzaiPanel extends JPanel
 
     public void actionPerformed(ActionEvent e) {
         ListSelectionModel selection =
-                orderPanel.orderTable().getSelectionModel();
+                orderPanel.getOrderTable().getSelectionModel();
         selection.clearSelection();
     }
 
     private class OrderSelection implements ListSelectionListener {
         public void valueChanged(ListSelectionEvent e) {
             ListSelectionModel selection =
-                    orderPanel.orderTable().getSelectionModel();
+                    orderPanel.getOrderTable().getSelectionModel();
             if (selection.isSelectionEmpty()) {
                 orderEntryPanel.clearMessage();
                 return;

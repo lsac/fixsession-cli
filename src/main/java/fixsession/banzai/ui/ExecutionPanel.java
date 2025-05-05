@@ -29,6 +29,12 @@ import java.awt.*;
  */
 public class ExecutionPanel extends JPanel {
 
+    private final JTable table;
+
+    public JTable getTable() {
+        return table;
+    }
+
     public ExecutionPanel(ExecutionTableModel executionTableModel) {
         setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
         setLayout(new GridBagLayout());
@@ -37,7 +43,7 @@ public class ExecutionPanel extends JPanel {
         constraints.weightx = 1;
         constraints.weighty = 1;
 
-        JTable table = new ExecutionTable(executionTableModel);
+        table = new ExecutionTable(executionTableModel);
         add(new JScrollPane(table), constraints);
     }
 
