@@ -253,5 +253,28 @@ mutate clear
 
 Quickfixj is a very popular open source project and has been adopted by many businesses. I have come to work on Quickfixj projects since 2007.
 
+### Build and Run
 
+#### IDE Config
+##### Select JDK18 in Project structure
+![screenshot](image/structure.png)
 
+##### Select JDK18 in IDE settings
+![screenshot](image/settings.png)
+
+#### Java
+JDK release 18 is required
+```declarative
+$ java -version
+openjdk version "18.0.2.1" 2022-08-18
+OpenJDK Runtime Environment Zulu18.32+13-CA (build 18.0.2.1+1)
+OpenJDK 64-Bit Server VM Zulu18.32+13-CA (build 18.0.2.1+1, mixed mode, sharing)
+```    
+
+#### Run
+
+```declarative
+java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j2.debug -Dlogname=client.log fixsession.banzai.Banzai
+
+java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j.debug -Dlog4j2.debug -Dlogname=server.log fixsession.executor.Executor
+```
