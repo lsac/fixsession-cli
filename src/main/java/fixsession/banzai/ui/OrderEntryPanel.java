@@ -281,9 +281,10 @@ public class OrderEntryPanel extends JPanel implements Observer {
             if (type == OrderType.STOP || type == OrderType.STOP_LIMIT)
                 order.setStop(stopPriceTextField.getText());
 
+            int i=1;
             order.setSessionID((SessionID) sessionComboBox.getSelectedItem());
-            runLater(order, 1,0);
-            for (int i = 2; i <= (Integer) orderCount.getValue(); i++) {
+            runLater(order, i,0);
+            for (i=2; i <= (Integer) orderCount.getValue(); i++) {
                 if (pauseby > 0) {
                     long end=System.nanoTime()+pauseby;
                     while(System.nanoTime()<=end)
@@ -292,6 +293,7 @@ public class OrderEntryPanel extends JPanel implements Observer {
                 order = (Order)order.clone();
                 runLater(order, i, pauseby);
             }
+            LOG.debug("order is repeated {} times", i-1);
         }
     }
 
