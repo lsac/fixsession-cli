@@ -20,6 +20,7 @@
 package fixsession.banzai;
 
 import fixsession.cli.CliServer;
+import fixsession.cli.Mutator;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quickfix.ApplicationExtended;
@@ -121,6 +122,7 @@ public class BanzaiApplication implements ApplicationExtended {
     }
 
     public void toApp(quickfix.Message message, SessionID sessionID) throws DoNotSend {
+        Mutator.INST.process(message);
     }
 
     public void fromAdmin(quickfix.Message message, SessionID sessionID) throws FieldNotFound,
