@@ -222,13 +222,15 @@ session connect
 
 #### mutator
 
-Mutator is to mutate incoming or/and outgoing messages. Message tags and header tags
-can be added, removed, changed and set empty.
+Mutator is very powerful to mutate incoming or/and outgoing messages. Message tags and header tags can be added, removed, changed and set empty. 
 
-Support tag operations are ADD, HADD, SET, HSET, REMOVE, HREMOVE, EMPTY, HEMPTY. The H prefix designates
-header tag operations.
+Supported tag operations are ADD, HADD, SET, HSET, REMOVE, HREMOVE, EMPTY, HEMPTY. The H prefix designates header tag operations.
 
-Mutator is used to test FIX engine's obedience to the ROE.
+Invalid tag values or missing tags have different handling on the counterparty sides. Some would reject, some would drop on the floor, some become DK.
+
+Some rejections come from the FIX gateways, some rejections come from the backend processors. 
+
+There has been recent CAT reporting requirements on rejected orders if not all, i.e. invalid tag values, missing tags and etc.
 
 ```declarative
 mutate
