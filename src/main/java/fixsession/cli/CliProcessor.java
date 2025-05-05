@@ -226,7 +226,6 @@ public class CliProcessor extends Thread {
                                     ret = split[0] + " seq# set to " + out;
                                 } catch (Exception e) {
                                     LOG.error("failed to parse and set {}", split[1], e);
-
                                 }
                             }
                         }
