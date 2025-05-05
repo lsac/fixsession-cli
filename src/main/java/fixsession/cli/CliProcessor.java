@@ -206,7 +206,7 @@ public class CliProcessor extends Thread {
                                     LOG.error("failed in {}", cmd, e);
                                 }
                             }
-                        } else if (cmd.startsWith("sender ")) {
+                        } else if (cmd.startsWith("sender ") || cmd.startsWith("out ")) {
                             String[] split = StringUtils.split(cmd);
                             if (split.length == 2) {
                                 try {
@@ -217,7 +217,7 @@ public class CliProcessor extends Thread {
                                     LOG.error("failed to parse and set {}", split[1], e);
                                 }
                             }
-                        } else if (cmd.startsWith("target ")) {
+                        } else if (cmd.startsWith("target ") || cmd.startsWith("in ")) {
                             String[] split = StringUtils.split(cmd);
                             if (split.length == 2) {
                                 try {
