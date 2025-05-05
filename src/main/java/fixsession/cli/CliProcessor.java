@@ -212,7 +212,7 @@ public class CliProcessor extends Thread {
                                 try {
                                     int in = Integer.parseInt(split[1]);
                                     CliServer.INST.currentSession.setNextSenderMsgSeqNum(in);
-                                    ret = "sender seq# set to " + in;
+                                    ret = split[0] + " seq# set to " + in;
                                 } catch (Exception e) {
                                     LOG.error("failed to parse and set {}", split[1], e);
                                 }
@@ -223,7 +223,7 @@ public class CliProcessor extends Thread {
                                 try {
                                     int out = Integer.parseInt(split[1]);
                                     CliServer.INST.currentSession.setNextTargetMsgSeqNum(out);
-                                    ret = "target seq# set to " + out;
+                                    ret = split[0] + " seq# set to " + out;
                                 } catch (Exception e) {
                                     LOG.error("failed to parse and set {}", split[1], e);
 
