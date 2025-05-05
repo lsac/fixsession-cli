@@ -55,7 +55,7 @@ Session commands support session actions, i.e. logon, logout, disconnect, discon
 ##### Session resend
 Ask for resend from a sequence number
 
-```aidl
+```declarative
 session current
 -> FIX.4.2:BANZAI->EXEC[in:11206,out:2355]
 session resend 11170
@@ -78,7 +78,7 @@ session resend 11170
 ##### Session testrequest
 Send a test request with a unique identifier
 
-```aidl
+```declarative
 session testrequest
 -> testrequest on 1746388910636 sent
 
@@ -90,7 +90,7 @@ session testrequest
 ##### Sequence number reset
 Resets IN and OUT sequence to 1
 
-```aidl
+```declarative
 session current
 -> FIX.4.2:BANZAI->EXEC[in:11231,out:2381]
 session reset
@@ -115,7 +115,7 @@ session current
 ##### Session sequence number change
 Change IN or OUT sequence number to a given value
 
-```aidl
+```declarative
 session current
 -> FIX.4.2:BANZAI->EXEC[in:45,out:90]
 -> FIX.4.2:BANZAI->EXEC has logged out
@@ -139,7 +139,7 @@ session sender 2382
 
 When a session is logged out or disconnected by the CLI, the session is put on the blocked list for reconnections. 
 
-```aidl
+```declarative
 session list
 -> FIXT.1.1:BANZAI->EXEC[in:186,out:186]
 FIX.4.2:BANZAI->EXEC[in:3733,out:1920]
@@ -170,7 +170,7 @@ session logout
 All sessions can be disconnected and connected via CLI. The disconnect on the acceptor throws RejectLogon 
 when logon is attempted - hence the client session is disabled from reconnect.
 
-```aidl
+```declarative
 session FIX.4.2:EXEC->BANZAI
 -> FIX.4.2:EXEC->BANZAI[in:1942,out:3755] is current
 
@@ -230,7 +230,7 @@ header tag operations.
 
 Mutator is used to test FIX engine's obedience to the ROE.
 
-```aidl
+```declarative
 mutate
 -> not processed
 mutate show
