@@ -22,6 +22,7 @@ package fixsession.banzai;
 import quickfix.SessionID;
 
 import java.util.StringJoiner;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class Order implements Cloneable {
     private static int nextID = 1;
@@ -44,6 +45,7 @@ public class Order implements Cloneable {
     private String originalID = null;
     private long sendTime;
     private long timediff;
+    private long batch;
 
     public Order() {
         ID = generateID();
@@ -67,6 +69,7 @@ public class Order implements Cloneable {
             order.setOpen(getOpen());
             order.setLimit(getLimit());
             order.setStop(getStop());
+            order.setBatch(getBatch());
             order.setSessionID(getSessionID());
             order.setTimediff(order.getSendTime()-this.sendTime);
 
@@ -74,6 +77,14 @@ public class Order implements Cloneable {
         } catch (CloneNotSupportedException e) {
         }
         return null;
+    }
+
+    public long getBatch() {
+        return batch;
+    }
+
+    public void setBatch(long batch) {
+        this.batch = batch;
     }
 
     @Override
@@ -98,12 +109,13 @@ public class Order implements Cloneable {
                 .add("originalID='" + originalID + "'")
                 .add("sendtime='" + sendTime + "'")
                 .add("timediff='" + timediff + "'")
+                .add("batch='" + batch + "'")
                 .toString();
     }
 
     public String generateID() {
         sendTime=System.currentTimeMillis();
-        return "" + sendTime + "A"+ nextID++;
+        return String.format("%05X_%X", nextID++ , sendTime%10000000);
     }
 
     public SessionID getSessionID() {

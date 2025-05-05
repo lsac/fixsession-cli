@@ -60,8 +60,9 @@ public class OrderTable extends JTable implements MouseListener {
             r.setBackground(Color.yellow);
         else if (open > 0)
             r.setBackground(Color.green);
-        else if (open == 0)
-            r.setBackground(Color.white);
+        else if (open == 0) {
+            r.setBackground(order.getBatch()%2==0?Color.white:Color.lightGray);
+        }
 
         return super.prepareRenderer(renderer, row, column);
     }

@@ -46,6 +46,7 @@ import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.locks.LockSupport;
 
 public class OrderEntryPanel extends JPanel implements Observer {
@@ -86,6 +87,7 @@ public class OrderEntryPanel extends JPanel implements Observer {
     private transient BanzaiApplication application = null;
 
     private final GridBagConstraints constraints = new GridBagConstraints();
+    private AtomicLong orderbatch = new AtomicLong();
 
     public OrderEntryPanel(final OrderTableModel orderTableModel,
                            final BanzaiApplication application) {
@@ -259,11 +261,11 @@ public class OrderEntryPanel extends JPanel implements Observer {
 
     private class SubmitListener implements ActionListener {
         public void actionPerformed(ActionEvent e) {
-
             long pauseby = (Integer) orderPause.getValue();
             LOG.debug("orders are sent at {} ms interval", pauseby);
             pauseby*=1000_000;
             Order order = new Order();
+            order.setBatch(orderbatch.getAndIncrement());
             order.setSide((OrderSide) sideComboBox.getSelectedItem());
             order.setType((OrderType) typeComboBox.getSelectedItem());
             order.setTIF((OrderTIF) tifComboBox.getSelectedItem());
