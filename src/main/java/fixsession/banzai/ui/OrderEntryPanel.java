@@ -50,7 +50,7 @@ import java.util.concurrent.locks.LockSupport;
 
 public class OrderEntryPanel extends JPanel implements Observer {
     private static final Logger LOG = LogManager.getLogger();
-    private final ExecutorService executorService = Executors.newFixedThreadPool(10);
+    private final ExecutorService executorService = Executors.newCachedThreadPool();
 
     private boolean symbolEntered = true;
     private boolean quantityEntered = true;

@@ -29,18 +29,19 @@ public class OrderTableModel extends AbstractTableModel {
     private static final Logger LOG = LogManager.getLogger();
 
 
-    private final static int SYMBOL = 0;
-    private final static int QUANTITY = 1;
-    private final static int OPEN = 2;
-    private final static int EXECUTED = 3;
-    private final static int SIDE = 4;
-    private final static int TYPE = 5;
-    private final static int LIMITPRICE = 6;
-    private final static int STOPPRICE = 7;
-    private final static int AVGPX = 8;
-    private final static int TARGET = 9;
-    private final static int SEND_TIME = 10;
-    private final static int DIFF_TIME = 11;
+    private final static int ORDERID = 0;
+    private final static int SYMBOL = 1;
+    private final static int QUANTITY = 2;
+    private final static int OPEN = 3;
+    private final static int EXECUTED = 4;
+    private final static int SIDE = 5;
+    private final static int TYPE = 6;
+    private final static int LIMITPRICE = 7;
+    private final static int STOPPRICE = 8;
+    private final static int AVGPX = 9;
+    private final static int TARGET = 10;
+    private final static int SEND_TIME = 11;
+    private final static int DIFF_TIME = 12;
 
     private final HashMap<Integer, Order> rowToOrder;
     private final HashMap<String, Integer> idToRow;
@@ -54,7 +55,7 @@ public class OrderTableModel extends AbstractTableModel {
         idToOrder = new HashMap<String, Order>();
 
         headers = new String[]
-                {"Symbol", "Quantity", "Open", "Executed",
+                {"ID", "Symbol", "Quantity", "Open", "Executed",
                         "Side", "Type", "Limit", "Stop", "AvgPx",
                         "Target", "Time", "Time Diff"};
     }
@@ -89,7 +90,7 @@ public class OrderTableModel extends AbstractTableModel {
         fireTableRowsInserted(row, row);
     }
 
-    public void addOrder(Order order) {
+    public synchronized void addOrder(Order order) {
         int row = rowToOrder.size();
         LOG.debug("add order - {}", order);
 
@@ -168,6 +169,8 @@ public class OrderTableModel extends AbstractTableModel {
     public Object getValueAt(int rowIndex, int columnIndex) {
         Order order = rowToOrder.get(Integer.valueOf(rowIndex));
         switch (columnIndex) {
+            case ORDERID:
+                return order.getID();
             case SYMBOL:
                 return order.getSymbol();
             case QUANTITY:

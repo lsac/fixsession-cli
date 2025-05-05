@@ -103,7 +103,7 @@ public class Order implements Cloneable {
 
     public String generateID() {
         sendTime=System.currentTimeMillis();
-        return Long.valueOf( sendTime+ (nextID++)).toString();
+        return "" + sendTime + "A"+ nextID++;
     }
 
     public SessionID getSessionID() {
