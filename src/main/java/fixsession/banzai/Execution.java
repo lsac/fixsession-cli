@@ -19,6 +19,8 @@
 
 package fixsession.banzai;
 
+import java.util.Objects;
+
 public class Execution {
     private static int nextID = 1;
     private String symbol = null;
@@ -26,6 +28,7 @@ public class Execution {
     private OrderSide side = OrderSide.BUY;
     private double price;
     private String ID = null;
+    private String OrderId;
     private String exchangeID = null;
 
     public Execution() {
@@ -38,6 +41,14 @@ public class Execution {
 
     public String getSymbol() {
         return symbol;
+    }
+
+    public String getOrderId() {
+        return OrderId;
+    }
+
+    public void setOrderId(String orderId) {
+        OrderId = orderId;
     }
 
     public void setSymbol(String symbol) {
@@ -78,5 +89,31 @@ public class Execution {
 
     public void setExchangeID(String exchangeID) {
         this.exchangeID = exchangeID;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        Execution execution = (Execution) o;
+        return quantity == execution.quantity && Double.compare(price, execution.price) == 0 && Objects.equals(symbol, execution.symbol) && Objects.equals(side, execution.side) && Objects.equals(ID, execution.ID) && Objects.equals(OrderId, execution.OrderId) && Objects.equals(exchangeID, execution.exchangeID);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(symbol, quantity, side, price, ID, OrderId, exchangeID);
+    }
+
+    @Override
+    public String toString() {
+        final StringBuilder sb = new StringBuilder("Execution{");
+        sb.append("symbol='").append(symbol).append('\'');
+        sb.append(", quantity=").append(quantity);
+        sb.append(", side=").append(side);
+        sb.append(", price=").append(price);
+        sb.append(", ID='").append(ID).append('\'');
+        sb.append(", OrderId='").append(OrderId).append('\'');
+        sb.append(", exchangeID='").append(exchangeID).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

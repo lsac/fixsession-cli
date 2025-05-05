@@ -28,10 +28,11 @@ import java.util.HashMap;
 public class ExecutionTableModel extends AbstractTableModel {
     private static final Logger LOG = LogManager.getLogger();
 
-    private final static int SYMBOL = 0;
-    private final static int QUANTITY = 1;
-    private final static int SIDE = 2;
-    private final static int PRICE = 3;
+    private final static int ORDERID = 0;
+    private final static int SYMBOL = 1;
+    private final static int QUANTITY = 2;
+    private final static int SIDE = 3;
+    private final static int PRICE = 4;
 
     private final HashMap<Integer, Execution> rowToExecution;
     private final HashMap<String, Integer> idToRow;
@@ -48,7 +49,7 @@ public class ExecutionTableModel extends AbstractTableModel {
         exchangeIdToExecution = new HashMap<String, Execution>();
 
         headers = new String[]
-                {"Symbol", "Quantity", "Side", "Price"};
+                {"ID", "Symbol", "Quantity", "Side", "Price"};
     }
 
     public void removeAllExecution() {
@@ -114,6 +115,8 @@ public class ExecutionTableModel extends AbstractTableModel {
                 (Integer.valueOf(rowIndex));
 
         switch (columnIndex) {
+            case ORDERID:
+                return execution.getOrderId();
             case SYMBOL:
                 return execution.getSymbol();
             case QUANTITY:
