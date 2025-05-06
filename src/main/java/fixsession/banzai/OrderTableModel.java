@@ -41,7 +41,8 @@ public class OrderTableModel extends AbstractTableModel {
     private final static int AVGPX = 9;
     private final static int TARGET = 10;
     private final static int SEND_TIME = 11;
-    private final static int DIFF_TIME = 12;
+    private final static int WAIT_TIME = 12;
+    private final static int DIFF_TIME = 13;
 
     private final HashMap<Integer, Order> rowToOrder;
     private final HashMap<String, Integer> idToRow;
@@ -57,7 +58,7 @@ public class OrderTableModel extends AbstractTableModel {
         headers = new String[]
                 {"ID", "Symbol", "Quantity", "Open", "Executed",
                         "Side", "Type", "Limit", "Stop", "AvgPx",
-                        "Target", "Time", "Time Diff"};
+                        "Target", "Time", "Time Wait", "Diff"};
     }
 
     public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -193,6 +194,8 @@ public class OrderTableModel extends AbstractTableModel {
                 return order.getSessionID().getTargetCompID();
             case SEND_TIME:
                 return order.getSendTime();
+            case WAIT_TIME:
+                return order.getWaitTime();
             case DIFF_TIME:
                 return order.getTimediff();
         }
