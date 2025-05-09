@@ -306,10 +306,9 @@ public class OrderEntryPanel extends JPanel implements Observer {
                 long start=System.nanoTime();
                 long end=start+pause;
                 o.setSendTime(end);
-                try( ExecutorService executorService = Executors.newVirtualThreadPerTaskExecutor()) {
-                    int countx=count;
-                    executorService.submit(() -> runLater(o, countx, start, end));
-                }
+                ExecutorService executorService = Executors.newCachedThreadPool();
+                int countx=count;
+                executorService.submit(() -> runLater(o, countx, start, end));
             } else {
                 application.send(o);
             }

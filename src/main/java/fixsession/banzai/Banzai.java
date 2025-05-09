@@ -90,10 +90,10 @@ public class Banzai {
         SessionInfo.INST.exporter.register(SessionInfo.INST.connector);
 
         CliServer.INST.setPort(SessionInfo.INST.CLIENT_PORT);
-        Thread thread = new Thread();
+        Thread thread = new Thread(CliServer.INST);
         thread.setDaemon(true);
         thread.setName("cli server");
-        thread.ofVirtual().start(CliServer.INST);
+        thread.start();
         LOG.debug("wait for listeners");
 
         banzaiFrame = new BanzaiFrame(orderTableModel, executionTableModel, (BanzaiApplication) SessionInfo.INST.application);

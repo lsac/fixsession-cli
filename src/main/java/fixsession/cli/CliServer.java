@@ -30,10 +30,10 @@ public enum CliServer implements Runnable {
 
     public static void main(String[] args) throws InterruptedException {
         CliServer.INST.setPort(1978);
-        Thread thread = new Thread();
+        Thread thread = new Thread(CliServer.INST);
         thread.setDaemon(true);
         thread.setName("cli server");
-        thread.ofVirtual().start(CliServer.INST);
+        thread.start();
         LOG.debug("wait for listener");
         thread.join();
     }

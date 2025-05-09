@@ -79,11 +79,11 @@ public class Executor {
 
         LOG.info("Acceptor registered with JMX, name= {}", connectorObjectName);
         CliServer.INST.setPort(SessionInfo.INST.SERVER_PORT);
-        Thread thread = new Thread();
+        Thread thread = new Thread(CliServer.INST);
         thread.setDaemon(true);
 
         thread.setName("cli server");
-        thread.ofVirtual().start(CliServer.INST);
+        thread.start();
         LOG.debug("wait for listeners");
 
     }
