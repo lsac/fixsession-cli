@@ -252,6 +252,20 @@ mutate show
 mutate clear
 -> tag map cleared
 ```
+Tag removal causes rejection on "Required tag missing"
+```declarative
+mutate D REMOVE 55
+-> processing D REMOVE 55
+20250509-21:44:49.890: 8=FIX.4.2^a9=138^a35=D^a34=181^a49=BANZAI^a52=20250509-21:44:49.889^a56=EXEC^a11=0000C_26637010418^a21=1^a38=200^a40=2^a44=444.55^a54=1^a59=0^a60=20250509-21:44:49.889^a10=007^a
+20250509-21:44:49.891: 8=FIX.4.2^a9=105^a35=3^a34=205^a49=EXEC^a52=20250509-21:44:49.891^a56=BANZAI^a45=181^a58=Required tag missing^a371=55^a372=D^a373=1^a10=100^a
+
+Tag removal causes rejection on "Tag specified without a value"
+```declarative
+mutate D EMPTY 55
+-> processing D EMPTY 55
+20250509-21:46:56.573: 8=FIX.4.2^a9=142^a35=D^a34=186^a49=BANZAI^a52=20250509-21:46:56.572^a56=EXEC^a11=0000D_283B654544E^a21=1^a38=200^a40=2^a44=444.55^a54=1^a55=^a59=0^a60=20250509-21:46:56.572^a10=196^a
+20250509-21:46:56.575: 8=FIX.4.2^a9=114^a35=3^a34=210^a49=EXEC^a52=20250509-21:46:56.574^a56=BANZAI^a45=186^a58=Tag specified without a value^a371=55^a372=D^a373=4^a10=137^a  
+```
 
 Quickfixj is a very popular open source project and has been adopted by many businesses. I have come to work on Quickfixj projects since 2007.
 
