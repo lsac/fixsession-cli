@@ -261,7 +261,7 @@ mutate D REMOVE 55
 20250509-21:44:49.891: 8=FIX.4.2^a9=105^a35=3^a34=205^a49=EXEC^a52=20250509-21:44:49.891^a56=BANZAI^a45=181^a58=Required tag missing^a371=55^a372=D^a373=1^a10=100^a
 ```
 
-Tag removal causes rejection on "Tag specified without a value"
+Empty tag value causes rejection on "Tag specified without a value"
 ```declarative
 mutate D EMPTY 55
 -> processing D EMPTY 55
