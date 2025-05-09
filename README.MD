@@ -252,12 +252,14 @@ mutate show
 mutate clear
 -> tag map cleared
 ```
+
 Tag removal causes rejection on "Required tag missing"
 ```declarative
 mutate D REMOVE 55
 -> processing D REMOVE 55
 20250509-21:44:49.890: 8=FIX.4.2^a9=138^a35=D^a34=181^a49=BANZAI^a52=20250509-21:44:49.889^a56=EXEC^a11=0000C_26637010418^a21=1^a38=200^a40=2^a44=444.55^a54=1^a59=0^a60=20250509-21:44:49.889^a10=007^a
 20250509-21:44:49.891: 8=FIX.4.2^a9=105^a35=3^a34=205^a49=EXEC^a52=20250509-21:44:49.891^a56=BANZAI^a45=181^a58=Required tag missing^a371=55^a372=D^a373=1^a10=100^a
+```
 
 Tag removal causes rejection on "Tag specified without a value"
 ```declarative
