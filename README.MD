@@ -88,7 +88,7 @@ session testrequest
 ```
 
 ##### Sequence number reset
-Resets IN and OUT sequence to 1
+Resets IN and OUT sequence to 1 causes immediate disconnect
 
 ```declarative
 session current
@@ -113,7 +113,7 @@ session current
 ```
 
 ##### Session sequence number change
-Change IN or OUT sequence number to a given value
+Change IN or OUT sequence number to a given value - to quickly reconnect sessions
 
 ```declarative
 session current
@@ -300,9 +300,11 @@ OpenJDK Runtime Environment Zulu18.32+13-CA (build 18.0.2.1+1)
 OpenJDK 64-Bit Server VM Zulu18.32+13-CA (build 18.0.2.1+1, mixed mode, sharing)
 ```    
 
-#### Run
+#### Build and Run
 
 ```declarative
+./gradlew clean shadowJar
+
 java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j2.debug -Dlogname=client.log fixsession.banzai.Banzai
 
 java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j.debug -Dlog4j2.debug -Dlogname=server.log fixsession.executor.Executor
