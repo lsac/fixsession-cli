@@ -19,12 +19,15 @@
 
 package fixsession.banzai;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import quickfix.SessionID;
 
 import java.util.StringJoiner;
 import java.util.concurrent.atomic.AtomicLong;
 
 public class Order implements Cloneable {
+    private static final Logger LOG = LogManager.getLogger();
     private static int nextID = 1;
     private SessionID sessionID = null;
     private String symbol = null;
@@ -43,6 +46,8 @@ public class Order implements Cloneable {
     private String message = null;
     private String ID = null;
     private String originalID = null;
+    private long createTime;
+    private long waitTime;
     private long sendTime;
     private long timediff;
     private long batch;
@@ -79,6 +84,22 @@ public class Order implements Cloneable {
         return null;
     }
 
+    public long getCreateTime() {
+        return createTime;
+    }
+
+    public void setCreateTime(long createTime) {
+        this.createTime = createTime;
+    }
+
+    public long getWaitTime() {
+        return waitTime;
+    }
+
+    public void setWaitTime(long waitTime) {
+        this.waitTime = waitTime;
+    }
+
     public long getBatch() {
         return batch;
     }
@@ -107,6 +128,8 @@ public class Order implements Cloneable {
                 .add("message='" + message + "'")
                 .add("ID='" + ID + "'")
                 .add("originalID='" + originalID + "'")
+                .add("createTime='" + createTime + "'")
+                .add("waitTime='" + waitTime + "'")
                 .add("sendtime='" + sendTime + "'")
                 .add("timediff='" + timediff + "'")
                 .add("batch='" + batch + "'")
@@ -114,8 +137,10 @@ public class Order implements Cloneable {
     }
 
     public String generateID() {
-        sendTime=System.currentTimeMillis();
-        return String.format("%05X_%X", nextID++ , sendTime%10000000);
+        createTime=System.nanoTime();
+        sendTime=createTime;
+
+        return String.format("%05X_%X", nextID++ , createTime%10000000000000l);
     }
 
     public SessionID getSessionID() {
@@ -196,6 +221,11 @@ public class Order implements Cloneable {
 
     public void setSendTime(long sendTime) {
         this.sendTime = sendTime;
+    }
+    public void setSendTimex(long sendTime, long last) {
+        this.sendTime = sendTime;
+        this.timediff=sendTime-last;
+        LOG.debug("{} with last {}", this, last);
     }
 
     public Double getLimit() {

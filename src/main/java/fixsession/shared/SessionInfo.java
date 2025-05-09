@@ -47,7 +47,6 @@ public enum SessionInfo {
             LOG.debug("empty sessionID");
             return false;
         }
-        LOG.debug("blocked sessions are {}", blockedSessions);
         boolean contains = blockedSessions.contains(sessionID);
         LOG.debug("session {} logon is {}allowed", sessionID, contains ? "not " : "");
         return !contains;

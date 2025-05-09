@@ -37,7 +37,6 @@ public enum Mutator {
         } catch (InvalidMessage e) {
             LOG.error("unable to mutate {}", message, e);
         }
-
     }
 
     @Override
@@ -57,7 +56,7 @@ public enum Mutator {
 
         try {
             if (cli.equalsIgnoreCase("show")) {
-                LOG.debug("cleared tag map, size is {}", tags.size());
+                LOG.debug("tag map is {}, size is {}", tags, tags.size());
                 return "tag map is " + tags.toString();
             } else if (cli.equalsIgnoreCase("clear")) {
                 tags.clear();
@@ -75,12 +74,17 @@ public enum Mutator {
                     return "invalid arguments";
             } else {
                 String[] split = cli.split(" ");
-                if (split.length != 4) {
+                ACTION action = ACTION.valueOf(split[1]);
+                if ((action==ACTION.SET || action== ACTION.ADD || action==ACTION.HSET || action== ACTION.HADD ) && split.length != 4) {
                     LOG.debug("failed to get 4 arguments [{}]", split);
                     return "invalid cli";
                 }
+                else if ((action==ACTION.EMPTY || action== ACTION.REMOVE || action==ACTION.HEMPTY || action== ACTION.HREMOVE ) && split.length != 3) {
+                    LOG.debug("failed to get 3 arguments [{}]", split);
+                    return "invalid cli";
+                }
                 else {
-                    config(split[0], ACTION.valueOf(split[1]), Integer.parseInt(split[2]), split[3]);
+                    config(split[0], action, Integer.parseInt(split[2]), split.length == 3 ? null:split[3]);
                 }
             }
             ret = "processing " + cli;

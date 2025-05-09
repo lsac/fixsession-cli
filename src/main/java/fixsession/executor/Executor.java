@@ -81,6 +81,7 @@ public class Executor {
         CliServer.INST.setPort(SessionInfo.INST.SERVER_PORT);
         Thread thread = new Thread(CliServer.INST);
         thread.setDaemon(true);
+
         thread.setName("cli server");
         thread.start();
         LOG.debug("wait for listeners");

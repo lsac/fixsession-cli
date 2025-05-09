@@ -28,6 +28,7 @@ import fixsession.banzai.OrderSide;
 import fixsession.banzai.OrderTIF;
 import fixsession.banzai.OrderTableModel;
 import fixsession.banzai.OrderType;
+import org.apache.commons.lang3.time.StopWatch;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import quickfix.SessionID;
@@ -40,18 +41,20 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
-import java.util.Date;
+import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.atomic.AtomicLong;
-import java.util.concurrent.locks.LockSupport;
 
 public class OrderEntryPanel extends JPanel implements Observer {
     private static final Logger LOG = LogManager.getLogger();
-    private final ExecutorService executorService = Executors.newCachedThreadPool();
+
+    private final ArrayList<Order> orders = new ArrayList<>();
+    private final AtomicLong lastSend = new AtomicLong();
+    private final StopWatch batchWatch = new StopWatch();
 
     private boolean symbolEntered = true;
     private boolean quantityEntered = true;
@@ -263,6 +266,7 @@ public class OrderEntryPanel extends JPanel implements Observer {
         public void actionPerformed(ActionEvent e) {
             long pauseby = (Integer) orderPause.getValue();
             LOG.debug("orders are sent at {} ms interval", pauseby);
+            orders.clear();
             pauseby*=1000_000;
             Order order = new Order();
             order.setBatch(orderbatch.getAndIncrement());
@@ -281,29 +285,59 @@ public class OrderEntryPanel extends JPanel implements Observer {
             if (type == OrderType.STOP || type == OrderType.STOP_LIMIT)
                 order.setStop(stopPriceTextField.getText());
 
-            int i=1;
             order.setSessionID((SessionID) sessionComboBox.getSelectedItem());
-            runLater(order, i,0);
-            for (i=2; i <= (Integer) orderCount.getValue(); i++) {
-                if (pauseby > 0) {
-                    long end=System.nanoTime()+pauseby;
-                    while(System.nanoTime()<=end)
-                        Thread.onSpinWait();
-                }
-                order = (Order)order.clone();
-                runLater(order, i, pauseby);
+            orders.add(order);
+
+            for (int i=2; i <= (Integer) orderCount.getValue(); i++) {
+                orders.add((Order)order.clone());
             }
-            LOG.debug("order is repeated {} times", i-1);
+            sendOrders(pauseby);
         }
     }
+    private void sendOrders(long pause) {
+        int count=1;
+        lastSend.set(0);
+        batchWatch.reset();
+        batchWatch.start();
+        for (Order o : orders) {
+            LOG.debug("processing {}", o);
+            orderTableModel.addOrder(o);
+            if (pause > 0 && count > 1) {
+                long start=System.nanoTime();
+                long end=start+pause;
+                o.setSendTime(end);
+                ExecutorService executorService = Executors.newCachedThreadPool();
+                int countx=count;
+                executorService.submit(() -> runLater(o, countx, start, end));
+            } else {
+                application.send(o);
+            }
+            count++;
+            Thread.yield();
+        }
+        batchWatch.stop();
+        LOG.debug("finished order batch in {}", batchWatch);
 
+    }
+    private void runLater(Order order, int count, long start, long end)  {
+        long startRun=System.nanoTime();
+        long ts = 0;
+        while ((ts=System.nanoTime()) <= end) {
+            Thread.onSpinWait();
+        }
 
-    private void runLater(Order order, int count,  long pause) {
-        executorService.submit(() -> {
-            orderTableModel.addOrder(order);
-            application.send(order);
-            LOG.debug("new order {} is {}", count, order);
-        });
+        if (lastSend.get() == 0) {
+            lastSend.set(ts);
+        }
+        order.setTimediff(ts - order.getSendTime());
+        order.setWaitTime(ts-start);
+        application.send(order);
+        lastSend.set(System.nanoTime());
+        LOG.debug("async finished in {}, order number {} ID {} delayed after sendWait {} ns was sent after waitStart-send {} ns, waitEnd-send {} ns\n{}",
+                NumberFormat.getInstance().format(lastSend.get()-startRun),count, order.getID(),
+                NumberFormat.getInstance().format(order.getTimediff()),
+                NumberFormat.getInstance().format(order.getWaitTime()),
+                NumberFormat.getInstance().format(ts - end), order);
     }
 
     private class SubmitActivator
