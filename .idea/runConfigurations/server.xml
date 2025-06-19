@@ -1,0 +1,10 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="server" type="Application" factoryName="Application">
+    <option name="MAIN_CLASS_NAME" value="fixsession.executor.Executor" />
+    <module name="FixSessionCli.main" />
+    <option name="VM_PARAMETERS" value="-Dlog4j2.debug -Dlogname=server.log" />
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>

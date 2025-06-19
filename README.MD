@@ -307,5 +307,5 @@ OpenJDK 64-Bit Server VM Zulu18.32+13-CA (build 18.0.2.1+1, mixed mode, sharing)
 
 java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j2.debug -Dlogname=client.log fixsession.banzai.Banzai
 
-java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j.debug -Dlog4j2.debug -Dlogname=server.log fixsession.executor.Executor
+java -cp ./build/libs/FixSessionCli-1.0-SNAPSHOT-all.jar -Dlog4j2.debug -Dlogname=server.log fixsession.executor.Executor
 ```
