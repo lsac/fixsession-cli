@@ -69,6 +69,7 @@ public class Application extends quickfix.MessageCracker implements quickfix.App
     private static final String DEFAULT_MARKET_PRICE_KEY = "DefaultMarketPrice";
     private static final String ALWAYS_FILL_LIMIT_KEY = "AlwaysFillLimitOrders";
     private static final String VALID_ORDER_TYPES_KEY = "ValidOrderTypes";
+    public static final SessionID DROP_SESSION = new SessionID("FIX.4.2", "EXEC", "DROPCOPY");
 
 
     private final boolean alwaysFillLimitOrders;
@@ -234,6 +235,9 @@ public class Application extends quickfix.MessageCracker implements quickfix.App
             }
 
             session.send(message);
+            Session drcp = Session.lookupSession(DROP_SESSION);
+            if(drcp!=null)
+                drcp.send(message);
         } catch (SessionNotFound e) {
             LOG.error(e.getMessage(), e);
         }
@@ -307,6 +311,7 @@ public class Application extends quickfix.MessageCracker implements quickfix.App
                 executionReport.set(new LastPx(price.getValue()));
 
                 sendMessage(sessionID, executionReport);
+
             }
         } catch (RuntimeException e) {
             LogUtil.logThrowable(sessionID, e.getMessage(), e);
