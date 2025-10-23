@@ -9,6 +9,15 @@ group = "org.example"
 version = "1.0-SNAPSHOT"
 
 repositories {
+    maven {
+        url = "https://dist.wso2.org/maven2"
+        metadataSources {
+            artifact()
+        }
+    }
+    maven {
+        url = "https://repo.marketcetera.org/maven/"
+    }
     mavenCentral()
     google()
     gradlePluginPortal()
