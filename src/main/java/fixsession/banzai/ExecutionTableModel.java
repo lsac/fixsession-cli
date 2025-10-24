@@ -124,7 +124,7 @@ public class ExecutionTableModel extends AbstractTableModel {
             case SIDE:
                 return execution.getSide();
             case PRICE:
-                return new Double(execution.getPrice());
+                return execution.getPrice();
         }
         return "";
     }
