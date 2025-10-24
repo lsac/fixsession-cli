@@ -237,8 +237,14 @@ public class BanzaiApplication implements ApplicationExtended {
     private void executionReport(Message message, SessionID sessionID) throws FieldNotFound {
         OrdStatus ordStatus = (OrdStatus) message.getField(new OrdStatus());
         ExecID execID = (ExecID) message.getField(new ExecID());
-        if (alreadyProcessed(execID, sessionID))
+        if (alreadyProcessed(execID, sessionID)) {
+            LOG.debug("duplicate");
             return;
+        }
+        if (sessionID.getSenderCompID().contains("DROPCOPY")) {
+            LOG.debug("DROPCOPY skipped");
+            return;
+        }
 
         Order order = orderTableModel.getOrder(message.getField(new ClOrdID()).getValue());
         if (order == null) {
