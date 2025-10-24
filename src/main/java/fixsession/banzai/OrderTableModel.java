@@ -189,7 +189,7 @@ public class OrderTableModel extends AbstractTableModel {
             case STOPPRICE:
                 return order.getStop();
             case AVGPX:
-                return new Double(order.getAvgPx());
+                return order.getAvgPx();
             case TARGET:
                 return order.getSessionID().getTargetCompID();
             case SEND_TIME:

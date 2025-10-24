@@ -268,7 +268,7 @@ public class BanzaiApplication implements ApplicationExtended {
             if (fillSize.compareTo(BigDecimal.ZERO) > 0) {
                 order.setOpen(order.getOpen() - (int) Double.parseDouble(fillSize.toPlainString()));
                 order.setExecuted(Integer.valueOf(message.getString(CumQty.FIELD)));
-                order.setAvgPx(new Double(message.getString(AvgPx.FIELD)));
+                order.setAvgPx(Double.parseDouble(message.getString(AvgPx.FIELD)));
             }
 
         }
@@ -305,7 +305,7 @@ public class BanzaiApplication implements ApplicationExtended {
             execution.setSymbol(message.getField(new Symbol()).getValue());
             execution.setQuantity(fillSize.intValue());
             if (message.isSetField(LastPx.FIELD)) {
-                execution.setPrice(new Double(message.getString(LastPx.FIELD)));
+                execution.setPrice(Double.parseDouble(message.getString(LastPx.FIELD)));
             }
             Side side = (Side) message.getField(new Side());
             execution.setSide(FIXSideToSide(side));
