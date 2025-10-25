@@ -99,7 +99,7 @@ public class RBCQueue {
         rbcQueue.offer("2", "2000", 2000);
         rbcQueue.offer(3, 2500);
 
-        Thread.sleep(1000);
+        Thread.sleep(10000);
         rbcQueue.stopped = true;
     }
 }
