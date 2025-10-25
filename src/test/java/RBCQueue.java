@@ -46,12 +46,16 @@ public class RBCQueue {
             public void run() {
                 while (!stopped) {
                     Map.Entry<Long, DataHolder> stringDataHolderEntry;
-                    stringDataHolderEntry = linkedHashMap.lastEntry();
+                    int size = linkedHashMap.size();
+                    if (size < 1) {
+                        continue;
+                    }
+                    stringDataHolderEntry = linkedHashMap.firstEntry();
                     while (stringDataHolderEntry != null) {
                         long lnow = System.currentTimeMillis();
                         if (lnow > stringDataHolderEntry.getValue().readby) {
                             synchronized (lockme) {
-                                linkedHashMap.pollLastEntry();
+                                linkedHashMap.pollFirstEntry();
                             }
                             LOG.debug("now is {} {}", lnow, stringDataHolderEntry);
                             stringDataHolderEntry = linkedHashMap.lastEntry();
@@ -83,7 +87,7 @@ public class RBCQueue {
     public void offer(long k, long v, long delay) {
         DataHolder dataHolder = new DataHolder(k, v, 300);
         synchronized (lockme) {
-            linkedHashMap.putFirst(k, dataHolder);
+            linkedHashMap.putLast(k, dataHolder);
         }
         LOG.debug("added {}", dataHolder);
     }
