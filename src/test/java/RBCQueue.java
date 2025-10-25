@@ -6,6 +6,7 @@ import java.util.Map;
 
 public class RBCQueue {
     private static final Logger LOG = LogManager.getLogger();
+    private Object lockme = new Object();
     volatile boolean stopped;
 
     interface Processor<K, V> {
@@ -49,7 +50,9 @@ public class RBCQueue {
                     while (stringDataHolderEntry != null) {
                         long lnow = System.currentTimeMillis();
                         if (lnow > stringDataHolderEntry.getValue().readby) {
-                            linkedHashMap.pollLastEntry();
+                            synchronized (lockme) {
+                                linkedHashMap.pollLastEntry();
+                            }
                             LOG.debug("now is {} {}", lnow, stringDataHolderEntry);
                             stringDataHolderEntry = linkedHashMap.lastEntry();
 
@@ -79,7 +82,9 @@ public class RBCQueue {
 
     public void offer(long k, long v, long delay) {
         DataHolder dataHolder = new DataHolder(k, v, 300);
-        linkedHashMap.putFirst(k, dataHolder);
+        synchronized (lockme) {
+            linkedHashMap.putFirst(k, dataHolder);
+        }
         LOG.debug("added {}", dataHolder);
     }
 
