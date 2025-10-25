@@ -50,21 +50,21 @@ public class RBCQueue {
                     if (size < 1) {
                         continue;
                     }
-                    stringDataHolderEntry = linkedHashMap.firstEntry();
-                    while (stringDataHolderEntry != null) {
-                        long lnow = System.currentTimeMillis();
-                        if (lnow > stringDataHolderEntry.getValue().readby) {
-                            synchronized (lockme) {
+                    synchronized (lockme) {
+                        stringDataHolderEntry = linkedHashMap.firstEntry();
+                        while (stringDataHolderEntry != null) {
+                            long lnow = System.currentTimeMillis();
+                            if (lnow > stringDataHolderEntry.getValue().readby) {
                                 linkedHashMap.pollFirstEntry();
-                            }
-                            LOG.debug("now is {} {}", lnow, stringDataHolderEntry);
-                            stringDataHolderEntry = linkedHashMap.lastEntry();
+                                LOG.debug("now is {} {}", lnow, stringDataHolderEntry);
+                                stringDataHolderEntry = linkedHashMap.lastEntry();
 
-                        } else {
-                            break;
+                            } else {
+                                break;
+                            }
                         }
+                        Thread.yield();
                     }
-                    Thread.yield();
                 }
             }
         });
