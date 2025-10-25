@@ -17,12 +17,12 @@ public class RBCQueue {
         long k;
         long v;
         long createdAt;
-        long readby;
+        long readBy;
 
-        public DataHolder(long k, long v, long readby) {
+        public DataHolder(long k, long v, long delay) {
             this.k = k;
             this.createdAt = System.currentTimeMillis();
-            this.readby = readby + this.createdAt;
+            this.readBy = delay + this.createdAt;
             this.v = v;
         }
 
@@ -32,7 +32,7 @@ public class RBCQueue {
             sb.append("k=").append(k);
             sb.append(", v=").append(v);
             sb.append(", createdAt=").append(createdAt);
-            sb.append(", readby=").append(readby);
+            sb.append(", readby=").append(readBy);
             sb.append('}');
             return sb.toString();
         }
@@ -54,7 +54,7 @@ public class RBCQueue {
                         stringDataHolderEntry = linkedHashMap.firstEntry();
                         while (stringDataHolderEntry != null) {
                             long lnow = System.currentTimeMillis();
-                            if (lnow > stringDataHolderEntry.getValue().readby) {
+                            if (lnow > stringDataHolderEntry.getValue().readBy) {
                                 linkedHashMap.pollFirstEntry();
                                 LOG.debug("now is {} {}", lnow, stringDataHolderEntry);
                                 stringDataHolderEntry = linkedHashMap.lastEntry();
@@ -85,7 +85,7 @@ public class RBCQueue {
     }
 
     public void offer(long k, long v, long delay) {
-        DataHolder dataHolder = new DataHolder(k, v, 300);
+        DataHolder dataHolder = new DataHolder(k, v, delay);
         synchronized (lockme) {
             linkedHashMap.putLast(k, dataHolder);
         }
