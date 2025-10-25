@@ -54,7 +54,7 @@ public class RBCQueue {
                         stringDataHolderEntry = linkedHashMap.firstEntry();
                         while (stringDataHolderEntry != null) {
                             long lnow = System.currentTimeMillis();
-                            if (lnow > stringDataHolderEntry.getValue().readBy) {
+                            if (lnow >= stringDataHolderEntry.getValue().readBy) {
                                 linkedHashMap.pollFirstEntry();
                                 LOG.debug("now is {} {}", lnow, stringDataHolderEntry);
                                 stringDataHolderEntry = linkedHashMap.lastEntry();
