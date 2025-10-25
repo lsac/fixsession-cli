@@ -46,6 +46,11 @@ tasks.test {
     useJUnitPlatform()
 }
 
+task testQueue(type: JavaExec) {
+    classpath sourceSets.main.runtimeClasspath + sourceSets.test.runtimeClasspath
+    mainClass = 'RBCQueue'
+}
+
 jar {
     manifest {
         attributes 'Multi-Release': 'true'
